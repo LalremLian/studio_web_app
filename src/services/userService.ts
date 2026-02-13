@@ -1,44 +1,17 @@
 'use server';
 
 import type { User } from '@/models/user';
-import { connectToDatabase } from '@/lib/mongodb';
-import { Collection, WithId } from 'mongodb';
 
-// This represents the structure in the database
-interface UserDocument {
-  name: string;
-  email: string;
-  password_hash: string;
-  createdAt: Date;
-}
-
-// A helper function to get the 'users' collection
-async function getUsersCollection(): Promise<Collection<UserDocument>> {
-  const { db } = await connectToDatabase();
-  return db.collection<UserDocument>('users');
-}
-
-// A helper to map from DB document to our application User model
-function fromUserDocument(doc: WithId<UserDocument>): User {
-    const { _id, password_hash, ...rest } = doc;
-    return {
-        id: _id.toHexString(),
-        password: password_hash, // mapping password_hash to password field in User model
-        ...rest,
-    };
-}
-
+// In-memory store for users to allow prototyping without a database.
+const users: User[] = [];
+let userIdCounter = 1;
 
 export async function getUserByEmail(email: string): Promise<User | null> {
-  const users = await getUsersCollection();
-  // Case-insensitive email search
-  const userDoc = await users.findOne({ email: email.toLowerCase() });
-
-  if (!userDoc) {
-    return null;
-  }
-  
-  return fromUserDocument(userDoc);
+  const user = users.find(
+    (u) => u.email.toLowerCase() === email.toLowerCase()
+  );
+  // Return a copy to prevent direct modification of the in-memory store
+  return user ? { ...user } : null;
 }
 
 type CreateUserParams = {
@@ -50,22 +23,18 @@ type CreateUserParams = {
 export async function createUser(
   params: CreateUserParams
 ): Promise<Omit<User, 'password'>> {
-    const users = await getUsersCollection();
-    
-    const newUserDocument: UserDocument = {
-        name: params.name,
-        email: params.email.toLowerCase(),
-        password_hash: params.password_hash,
-        createdAt: new Date(),
-    };
+  const newUser: User = {
+    id: (userIdCounter++).toString(),
+    name: params.name,
+    email: params.email.toLowerCase(),
+    password: params.password_hash,
+    createdAt: new Date(),
+  };
 
-    const result = await users.insertOne(newUserDocument);
-    
-    // We can construct the return object without another DB query
-    const { password_hash, ...userProfile } = newUserDocument;
+  users.push(newUser);
 
-    return {
-        id: result.insertedId.toHexString(),
-        ...userProfile,
-    };
+  // Don't return the password hash in the response
+  const { password, ...userProfile } = newUser;
+
+  return userProfile;
 }
