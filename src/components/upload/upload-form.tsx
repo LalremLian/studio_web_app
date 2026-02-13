@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -45,6 +46,7 @@ type AiResult = {
 } | null;
 
 export function UploadForm() {
+  const router = useRouter();
   const { toast } = useToast();
   const [isGenerating, startGenerateTransition] = useTransition();
   const [isUploading, startUploadTransition] = useTransition();
@@ -130,10 +132,12 @@ export function UploadForm() {
           title: 'Upload Complete!',
           description: `Your video "${values.title}" is now available.`,
         });
-        form.reset();
-        setAiResult(null);
-        setFile(null);
-        setTimeout(() => setUploadProgress(0), 2000);
+        
+        // Redirect to the home page to see the new video
+        setTimeout(() => {
+          router.push('/');
+        }, 1000);
+        
       } else {
         toast({
           variant: 'destructive',

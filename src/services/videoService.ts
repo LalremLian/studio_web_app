@@ -1,17 +1,21 @@
 'use server';
 
-import { mockVideos } from '@/lib/mock-data';
 import type { Video } from '@/models/video';
+import { mockVideos } from '@/lib/mock-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
-let videos: Video[] = [...mockVideos];
+// In-memory store for videos to allow prototyping without a database.
+const videos: Video[] = [...mockVideos];
+let videoIdCounter = videos.length + 1;
 
 export async function getVideoById(id: string): Promise<Video | null> {
   const video = videos.find((v) => v.id === id);
+  // Return a copy to prevent direct modification of the in-memory store
   return video ? { ...video } : null;
 }
 
 export async function getAllVideos(): Promise<Video[]> {
+  // Return a sorted copy to simulate database sorting
   return [...videos].sort(
     (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
   );
@@ -23,13 +27,12 @@ type CreateVideoParams = {
   summary: string | null;
   tags: string[] | null;
   file: File;
-  videoId: string;
   playableUrl: string;
 };
 
-export async function createVideo(params: CreateVideoParams): Promise<void> {
+export async function createVideo(params: CreateVideoParams): Promise<Video> {
   const newVideo: Video = {
-    id: params.videoId,
+    id: (videoIdCounter++).toString(),
     title: params.title,
     description: params.description,
     summary: params.summary ?? undefined,
@@ -39,9 +42,11 @@ export async function createVideo(params: CreateVideoParams): Promise<void> {
     status: 'uploaded',
     playableUrl: params.playableUrl,
     createdAt: new Date(),
-    imageId: 'cybernetic-horizon',
+    imageId: 'cybernetic-horizon', // Default image for new uploads
     image: PlaceHolderImages.find((img) => img.id === 'cybernetic-horizon'),
   };
 
-  videos.unshift(newVideo);
+  videos.push(newVideo);
+
+  return newVideo;
 }

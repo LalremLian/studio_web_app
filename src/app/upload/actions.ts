@@ -55,13 +55,12 @@ export async function uploadAction(
   // 1. Simulate Upload to Bunny.net using TUS
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
-  const videoId = `vid_${Date.now()}`;
-  const playableUrl = `https://your-bunny-stream-url.b-cdn.net/${videoId}/playlist.m3u8`;
+  const simulatedBunnyVideoId = `vid_${Date.now()}`;
+  const playableUrl = `https://your-bunny-stream-url.b-cdn.net/${simulatedBunnyVideoId}/playlist.m3u8`;
 
   // 2. Store metadata in MongoDB via the service
   try {
-    await createVideo({
-      videoId,
+    const newVideo = await createVideo({
       title,
       description,
       summary,
@@ -70,10 +69,11 @@ export async function uploadAction(
       playableUrl,
     });
 
+    // The real ID is from MongoDB now.
+    return { success: true, data: { videoId: newVideo.id, url: playableUrl } };
+
   } catch (error) {
     console.error('--- DATABASE SAVE FAILED ---', error);
     return { success: false, error: 'Failed to save video metadata to the database.' };
   }
-
-  return { success: true, data: { videoId, url: playableUrl } };
 }
