@@ -1,3 +1,64 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "cybernetic-horizon",
+      "description": "A neon-lit futuristic city skyline with flying vehicles.",
+      "imageUrl": "https://images.unsplash.com/photo-1718005159107-7358528771c9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzY2ktZmklMjBwb3N0ZXJ8ZW58MHx8fHwxNzcwOTg1MTg5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "sci-fi poster"
+    },
+    {
+      "id": "desert-fury",
+      "description": "A muscle car speeding through a vast, post-apocalyptic desert.",
+      "imageUrl": "https://images.unsplash.com/photo-1485846234645-a62644f84728?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxhY3Rpb24lMjBtb3ZpZXxlbnwwfHx8fDE3NzA4ODkwNzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "action movie"
+    },
+    {
+      "id": "ancients-awakening",
+      "description": "An ancient, moss-covered stone temple deep within a jungle.",
+      "imageUrl": "https://images.unsplash.com/photo-1534447677768-be436bb09401?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxmYW50YXN5JTIwd29ybGR8ZW58MHx8fHwxNzcwOTYyNDA3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "fantasy world"
+    },
+    {
+      "id": "star-voyager",
+      "description": "A lone spaceship drifting near a vibrant nebula in deep space.",
+      "imageUrl": "https://images.unsplash.com/photo-1761773850628-737da639d287?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxzcGFjZSUyMG9wZXJhfGVufDB8fHx8MTc3MDkyODQ4NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "space opera"
+    },
+    {
+      "id": "the-last-stand",
+      "description": "A knight in shining armor standing before a massive castle gate.",
+      "imageUrl": "https://images.unsplash.com/photo-1677537946959-9038a59d5da5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxtZWRpZXZhbCUyMGZhbnRhc3l8ZW58MHx8fHwxNzcwOTg1MTg5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "medieval fantasy"
+    },
+    {
+      "id": "neon-noir",
+      "description": "A detective in a trench coat standing on a rainy, neon-lit city street at night.",
+      "imageUrl": "https://images.unsplash.com/photo-1613485930018-9718f90b524d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxjcmltZSUyMHRocmlsbGVyfGVufDB8fHx8MTc3MDk0Mjc4Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "crime thriller"
+    },
+    {
+      "id": "echoes-of-time",
+      "description": "An old, intricate clock face with glowing hands, surrounded by cosmic dust.",
+      "imageUrl": "https://images.unsplash.com/photo-1673197260270-36cd477f5ba9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx0aW1lJTIwdHJhdmVsfGVufDB8fHx8MTc3MDkwNDcwMnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "time travel"
+    },
+    {
+      "id": "deep-dive",
+      "description": "A submarine exploring a mysterious underwater trench with bioluminescent creatures.",
+      "imageUrl": "https://images.unsplash.com/photo-1524070600608-41d598325be8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx1bmRlcndhdGVyJTIwYWR2ZW50dXJlfGVufDB8fHx8MTc3MDk4NTE5MHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "underwater adventure"
+    },
+    {
+      "id": "titan-protocol",
+      "description": "A giant robot standing tall amidst a destroyed city.",
+      "imageUrl": "https://images.unsplash.com/photo-1605070699221-a29c2a1b06af?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxnaWFudCUyMHJvYm90fGVufDB8fHx8MTc3MDkxOTU4MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "giant robot"
+    },
+    {
+      "id": "spectral-manor",
+      "description": "A spooky, haunted mansion on a hill under a full moon.",
+      "imageUrl": "https://images.unsplash.com/photo-1608234773137-a172858ca184?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxob3Jyb3IlMjBob3VzZXxlbnwwfHx8fDE3NzA5MDQ3NTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "horror house"
+    }
+  ]
 }
