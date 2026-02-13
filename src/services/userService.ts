@@ -1,17 +1,28 @@
 'use server';
 
+import { connectToDatabase } from '@/lib/mongodb';
 import type { User } from '@/models/user';
+import { Collection, ObjectId } from 'mongodb';
 
-// In-memory store for users to allow prototyping without a database.
-const users: User[] = [];
-let userIdCounter = 1;
+async function getUsersCollection(): Promise<Collection<Omit<User, 'id'>>> {
+  const { db } = await connectToDatabase();
+  return db.collection<Omit<User, 'id'>>('users');
+}
 
 export async function getUserByEmail(email: string): Promise<User | null> {
-  const user = users.find(
-    (u) => u.email.toLowerCase() === email.toLowerCase()
-  );
-  // Return a copy to prevent direct modification of the in-memory store
-  return user ? { ...user } : null;
+  const users = await getUsersCollection();
+  const user = await users.findOne({ email: email.toLowerCase() });
+
+  if (!user) {
+    return null;
+  }
+
+  // Convert _id to id
+  const { _id, ...rest } = user as any;
+  return {
+    id: _id.toHexString(),
+    ...rest,
+  };
 }
 
 type CreateUserParams = {
@@ -23,18 +34,21 @@ type CreateUserParams = {
 export async function createUser(
   params: CreateUserParams
 ): Promise<Omit<User, 'password'>> {
-  const newUser: User = {
-    id: (userIdCounter++).toString(),
+  const users = await getUsersCollection();
+  const newUser = {
     name: params.name,
     email: params.email.toLowerCase(),
     password: params.password_hash,
     createdAt: new Date(),
   };
 
-  users.push(newUser);
+  const result = await users.insertOne(newUser);
 
   // Don't return the password hash in the response
   const { password, ...userProfile } = newUser;
 
-  return userProfile;
+  return {
+    ...userProfile,
+    id: result.insertedId.toHexString(),
+  };
 }
