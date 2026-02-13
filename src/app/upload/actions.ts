@@ -2,6 +2,7 @@
 
 import { generateContentMetadata } from '@/ai/flows/generate-content-metadata.ts';
 import { z } from 'zod';
+import { connectToDatabase } from '@/lib/mongodb';
 
 const generateMetadataSchema = z.object({
   title: z.string(),
@@ -42,6 +43,9 @@ export async function uploadAction(
   formData: FormData
 ): Promise<ActionResult<{ videoId: string; url: string }>> {
   const title = formData.get('title') as string;
+  const description = formData.get('description') as string;
+  const summary = formData.get('summary') as string | null;
+  const tagsString = formData.get('tags') as string | null;
   const file = formData.get('file') as File;
 
   if (!title || !file) {
@@ -57,17 +61,30 @@ export async function uploadAction(
   const videoId = `vid_${Date.now()}`;
   const playableUrl = `https://your-bunny-stream-url.b-cdn.net/${videoId}/playlist.m3u8`;
 
-  // 2. Simulate Storing metadata in MongoDB
-  // In a real application, you would connect to your MongoDB instance and
-  // create a new document in your 'videos' collection.
-  console.log('--- SIMULATING DB SAVE ---');
-  console.log('Title:', title);
-  console.log('Description:', formData.get('description'));
-  console.log('Summary:', formData.get('summary'));
-  console.log('Tags:', formData.get('tags'));
-  console.log('Video ID:', videoId);
-  console.log('Playable URL:', playableUrl);
-  console.log('--------------------------');
+  // 2. Store metadata in MongoDB
+  try {
+    const { db } = await connectToDatabase();
+    const videosCollection = db.collection('videos');
+
+    const videoDocument = {
+      _id: videoId,
+      title,
+      description,
+      summary: summary || '',
+      tags: tagsString ? JSON.parse(tagsString) : [],
+      fileName: file.name,
+      size: file.size,
+      status: 'uploaded',
+      playableUrl,
+      createdAt: new Date(),
+    };
+
+    await videosCollection.insertOne(videoDocument);
+
+  } catch (error) {
+    console.error('--- DATABASE SAVE FAILED ---', error);
+    return { success: false, error: 'Failed to save video metadata to the database.' };
+  }
 
   return { success: true, data: { videoId, url: playableUrl } };
 }
