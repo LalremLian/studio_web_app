@@ -2,7 +2,7 @@
 
 import { generateContentMetadata } from '@/ai/flows/generate-content-metadata.ts';
 import { z } from 'zod';
-import { connectToDatabase } from '@/lib/mongodb';
+import { createVideo } from '@/services/videoService';
 
 const generateMetadataSchema = z.object({
   title: z.string(),
@@ -53,33 +53,22 @@ export async function uploadAction(
   }
   
   // 1. Simulate Upload to Bunny.net using TUS
-  // In a real application, you would use a TUS client here to upload `file`.
-  // The client would provide an upload URL.
-  // For this demo, we'll just wait and create a fake ID.
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
   const videoId = `vid_${Date.now()}`;
   const playableUrl = `https://your-bunny-stream-url.b-cdn.net/${videoId}/playlist.m3u8`;
 
-  // 2. Store metadata in MongoDB
+  // 2. Store metadata in MongoDB via the service
   try {
-    const { db } = await connectToDatabase();
-    const videosCollection = db.collection('videos');
-
-    const videoDocument = {
-      _id: videoId,
+    await createVideo({
+      videoId,
       title,
       description,
-      summary: summary || '',
+      summary,
       tags: tagsString ? JSON.parse(tagsString) : [],
-      fileName: file.name,
-      size: file.size,
-      status: 'uploaded',
+      file,
       playableUrl,
-      createdAt: new Date(),
-    };
-
-    await videosCollection.insertOne(videoDocument);
+    });
 
   } catch (error) {
     console.error('--- DATABASE SAVE FAILED ---', error);

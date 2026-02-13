@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { mockMovies } from '@/lib/data';
+import { getVideoById } from '@/services/videoService';
 
 export async function GET(
   request: Request,
@@ -14,16 +14,16 @@ export async function GET(
     );
   }
 
-  const movie = mockMovies.find((m) => m.id === id);
+  const video = await getVideoById(id);
 
-  if (!movie) {
+  if (!video) {
     return NextResponse.json({ error: 'Video not found' }, { status: 404 });
   }
 
   return NextResponse.json({
-    id: movie.id,
-    title: movie.title,
-    description: movie.description,
-    playableUrl: movie.url,
+    id: video.id,
+    title: video.title,
+    description: video.description,
+    playableUrl: video.playableUrl,
   });
 }

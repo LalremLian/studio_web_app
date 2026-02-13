@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import { PlayCircle } from 'lucide-react';
-import type { Movie } from '@/lib/data';
+import type { Video } from '@/models/video';
 import { cn } from '@/lib/utils';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 
 type MovieCardProps = {
-  movie: Movie;
+  movie: Video;
   className?: string;
 };
 

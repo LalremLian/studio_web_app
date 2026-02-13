@@ -1,16 +1,7 @@
-import type { ImagePlaceholder } from './placeholder-images';
+import type { Video } from '@/models/video';
 import { PlaceHolderImages } from './placeholder-images';
 
-export type Movie = {
-  id: string;
-  title: string;
-  description: string;
-  imageId: string;
-  image?: ImagePlaceholder;
-  url?: string;
-};
-
-const movieData: Omit<Movie, 'image' | 'url'>[] = [
+const videoData: Omit<Video, 'image' | 'playableUrl' | 'createdAt'>[] = [
   {
     id: '1',
     title: 'Cybernetic Horizon',
@@ -83,8 +74,9 @@ const movieData: Omit<Movie, 'image' | 'url'>[] = [
   },
 ];
 
-export const mockMovies: Movie[] = movieData.map((movie) => ({
-  ...movie,
-  image: PlaceHolderImages.find((img) => img.id === movie.imageId),
-  url: `https://bunny.net/stream/your-library-id/${movie.id}.m3u8`,
+export const mockVideos: Video[] = videoData.map((video) => ({
+  ...video,
+  image: PlaceHolderImages.find((img) => img.id === video.imageId),
+  playableUrl: `https://bunny.net/stream/your-library-id/${video.id}.m3u8`,
+  createdAt: new Date(),
 }));
